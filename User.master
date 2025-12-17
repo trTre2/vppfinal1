@@ -1,0 +1,142 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="User.master.cs" Inherits="User" %>
+
+<!DOCTYPE html>
+<head runat="server">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title runat="server"></title>
+
+    <link rel="stylesheet" type="text/css" href="css/UserMaster.css" />
+</head>
+
+<body id="pg" runat="server">
+    <form runat="server">
+        <header id="header" runat="server">
+
+            <div class="top-bar" runat="server">
+
+                <asp:HyperLink href="Index.aspx" class="logo" runat="server">
+                <img src="images/logo.png" alt="VPP Online Logo" runat="server" />
+                </asp:HyperLink>
+
+                <div class="search-container" runat="server">
+                    <asp:TextBox ID="search" placeholder="Tìm kiếm sản phẩm..." runat="server" />
+                    <asp:Button class="search-btn" ID="searchbtn" Text="Tìm Kiếm" runat="server"></asp:Button>
+                </div>
+
+                <div class="user-actions" runat="server">
+
+                    <!-- Nút mở giỏ -->
+    <div id="btnCart" onclick="openCart()">🛒 Giỏ hàng</div>
+
+
+<!-- Overlay -->
+<div id="cartOverlay" class="close-cart" onclick="closeCart()"></div>
+
+<!-- Popup -->
+<div id="cartPopup">
+    <span class="close-cart" onclick="closeCart()">×</span>
+    <h2>Giỏ hàng</h2>
+
+    <asp:Repeater ID="rpCart" runat="server">
+        <ItemTemplate>
+            <div class="cart-item">
+                <img src='<%# Eval("AnhSP") %>' />
+                <div>
+                    <b><%# Eval("TenSP") %></b><br />
+                    Giá: <%# Eval("Gia") %> đ<br />
+                    SL: <%# Eval("SoLuong") %>
+                </div>
+            </div>
+        </ItemTemplate>
+    </asp:Repeater>
+
+    <h3>Tổng: <asp:Label ID="lblTotal" runat="server" /></h3>
+
+    <asp:Button ID="btnCheckout" runat="server" Text="Thanh toán"
+        PostBackUrl="~/Checkout.aspx" />
+                    </div>
+
+                
+
+                <div class="auth-links" runat="server" id="AuthLinks">
+    <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="Login.aspx">Đăng nhập</asp:HyperLink>
+    <span id="sep" runat="server"> / </span>
+    <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="Signin.aspx">Đăng ký</asp:HyperLink>
+
+    <asp:LinkButton ID="btnLogout" runat="server"
+        OnClick="btnLogout_Click"
+        Visible="false">Đăng xuất</asp:LinkButton>
+
+    <asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label>
+</div>
+
+
+            </div>
+            </div>
+
+            <nav class="main-menu" runat="server">
+                <asp:HyperLink runat="server" NavigateUrl="~/Index.aspx">Trang chủ</asp:HyperLink>
+                <li class="has-submenu" runat="server">
+                    <a runat="server" href="#">Sản phẩm</a>
+
+                    <ul class="submenu" runat="server">
+                        <li runat="server"><a href="#" onclick="redirectToCategory('giay')" runat="server">Giấy</a></li>
+                        <li runat="server"><a href="#" onclick="redirectToCategory('but')" runat="server">Bút</a></li>
+                        <li runat="server"><a href="#" onclick="redirectToCategory('khac')" runat="server">Khác</a></li>
+                    </ul>
+
+                </li>
+
+                <asp:HyperLink href="#" runat="server">Khuyến mãi</asp:HyperLink>
+                <asp:HyperLink href="#" runat="server">Hướng dẫn</asp:HyperLink>
+                <asp:HyperLink href="checkout.aspx" runat="server">Thanh toán</asp:HyperLink>
+                <asp:HyperLink href="about.aspx" runat="server">Về chúng tôi</asp:HyperLink>
+
+            </nav>
+
+        </header>
+        <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h4>Về chúng tôi</h4>
+                    <p>Chuyên cung cấp văn phòng phẩm chất lượng cao</p>
+                </div>
+                <div class="footer-section links">
+                    <h4>Liên kết</h4>
+                    <ul>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Điều khoản sử dụng</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h4>Liên hệ</h4>
+                    <p>Email: vuvietmanh2208@gmail.com | nguyenbui0410@gmail.com</p>
+                    <p>Hotline: 1800 1234</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VPP Online. All rights reserved.</p>
+            </div>
+        </footer>
+    </form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("cartPopup").style.display = "none";
+        document.getElementById("cartOverlay").style.display = "none";
+    });
+
+    function openCart() {
+        document.getElementById('cartOverlay').style.display = 'block';
+        document.getElementById('cartPopup').style.display = 'block';
+    }
+
+    function closeCart() {
+        document.getElementById('cartOverlay').style.display = 'none';
+        document.getElementById('cartPopup').style.display = 'none';
+    }
+</script>
+
+</body>
