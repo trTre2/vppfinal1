@@ -27,52 +27,52 @@
                 <div class="user-actions" runat="server">
 
                     <!-- Nút mở giỏ -->
-    <div id="btnCart" onclick="openCart()">🛒 Giỏ hàng</div>
+                    <div id="btnCart" onclick="openCart()">🛒 Giỏ hàng</div>
 
 
-<!-- Overlay -->
-<div id="cartOverlay" class="close-cart" onclick="closeCart()"></div>
+                    <!-- Overlay -->
+                    <div id="cartOverlay" class="close-cart" onclick="closeCart()"></div>
 
-<!-- Popup -->
-<div id="cartPopup">
-    <span class="close-cart" onclick="closeCart()">×</span>
-    <h2>Giỏ hàng</h2>
+                    <!-- Popup -->
+                    <div id="cartPopup">
+                        <span class="close-cart" onclick="closeCart()">×</span>
+                        <h2>Giỏ hàng</h2>
 
-    <asp:Repeater ID="rpCart" runat="server">
-        <ItemTemplate>
-            <div class="cart-item">
-                <img src='<%# Eval("AnhSP") %>' />
-                <div>
-                    <b><%# Eval("TenSP") %></b><br />
-                    Giá: <%# Eval("Gia") %> đ<br />
-                    SL: <%# Eval("SoLuong") %>
-                </div>
-            </div>
-        </ItemTemplate>
-    </asp:Repeater>
+                        <asp:Repeater ID="rpCart" runat="server">
+                            <ItemTemplate>
+                                <div class="cart-item">
+                                    <img src='<%# Eval("AnhSP") %>' />
+                                    <div>
+                                        <b><%# Eval("TenSP") %></b><br />
+                                        Giá: <%# Eval("Gia") %> đ<br />
+                                        SL: <%# Eval("SoLuong") %>
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
 
-    <h3>Tổng: <asp:Label ID="lblTotal" runat="server" /></h3>
+                        <h3>Tổng:
+                            <asp:Label ID="lblTotal" runat="server" /></h3>
 
-    <asp:Button ID="btnCheckout" runat="server" Text="Thanh toán"
-        PostBackUrl="~/Checkout.aspx" />
+                        <asp:Button ID="btnCheckout" runat="server" Text="Thanh toán"
+                            PostBackUrl="~/Checkout.aspx" />
                     </div>
 
-                
-
-                <div class="auth-links" runat="server" id="AuthLinks">
-    <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="Login.aspx">Đăng nhập</asp:HyperLink>
-    <span id="sep" runat="server"> / </span>
-    <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="Signin.aspx">Đăng ký</asp:HyperLink>
-
-    <asp:LinkButton ID="btnLogout" runat="server"
-        OnClick="btnLogout_Click"
-        Visible="false">Đăng xuất</asp:LinkButton>
-
-    <asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label>
-</div>
 
 
-            </div>
+                    <div class="auth-links" runat="server" id="AuthLinks">
+                        <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="Login.aspx" Text="Đăng nhập"></asp:HyperLink>
+                        <span id="sep" runat="server">/ </span>
+                        <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="Signup.aspx" Text="Đăng ký"></asp:HyperLink>
+
+                        <asp:HyperLink runat="server" ID="Redirt" NavigateUrl="Info.aspx"><asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label></asp:HyperLink>
+                        <asp:LinkButton ID="btnLogout" runat="server"
+                            OnClick="btnLogout_Click"
+                            Visible="false">Đăng xuất</asp:LinkButton>
+                    </div>
+
+
+                </div>
             </div>
 
             <nav class="main-menu" runat="server">
@@ -122,21 +122,21 @@
             </div>
         </footer>
     </form>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("cartPopup").style.display = "none";
-        document.getElementById("cartOverlay").style.display = "none";
-    });
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("cartPopup").style.display = "none";
+            document.getElementById("cartOverlay").style.display = "none";
+        });
 
-    function openCart() {
-        document.getElementById('cartOverlay').style.display = 'block';
-        document.getElementById('cartPopup').style.display = 'block';
-    }
+        function openCart() {
+            document.getElementById('cartOverlay').style.display = 'block';
+            document.getElementById('cartPopup').style.display = 'block';
+        }
 
-    function closeCart() {
-        document.getElementById('cartOverlay').style.display = 'none';
-        document.getElementById('cartPopup').style.display = 'none';
-    }
-</script>
+        function closeCart() {
+            document.getElementById('cartOverlay').style.display = 'none';
+            document.getElementById('cartPopup').style.display = 'none';
+        }
+    </script>
 
 </body>

@@ -1,0 +1,27 @@
+﻿<mxfile host="app.diagrams.net">
+  <diagram name="ClassDiagram">
+    <mxGraphModel>
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="c1" value="User\n- ID\n- Username\n- Password\n- Role" style="swimlane" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="180" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="c2" value="KhachHang\n- id\n- TenKH\n- Phone\n- DiaChi" style="swimlane" vertex="1" parent="1">
+          <mxGeometry x="260" y="40" width="200" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="c3" value="SanPham\n- id\n- TenSP\n- Gia\n- MoTa\n- MaLoai" style="swimlane" vertex="1" parent="1">
+          <mxGeometry x="40" y="260" width="220" height="180" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="c4" value="DonHang\n- MaDH\n- idKH\n- TongTien\n- NgayDat" style="swimlane" vertex="1" parent="1">
+          <mxGeometry x="320" y="260" width="220" height="180" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

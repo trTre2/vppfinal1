@@ -13,16 +13,6 @@ public partial class User : System.Web.UI.MasterPage
 
 protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["User"] != null)
-        {
-            string user = Session["User"].ToString();
-            SqlDataAdapter da = new SqlDataAdapter("SELECT a.ID_KH, b.TenKH FROM Users a JOIN KhachHang b ON a.ID_KH = b.id WHERE Username = @username", conn);
-            da.SelectCommand.Parameters.AddWithValue("@username",user);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            string uid = dt.Rows[0]["ID_KH"].ToString();
-        userID = Convert.ToInt32(uid);
-        }
         if (!IsPostBack)
         {
             LoadCart();
@@ -66,9 +56,9 @@ protected void Page_Load(object sender, EventArgs e)
    
     private void UpdateAuthLinks()
     {
-        if (Session["User"] != null)
+        if (Session["TenKH"] != null )
         {
-            lblUser.Text = "Xin chào, " + Session["User"];
+            lblUser.Text = "Xin chào, " + Session["TenKH"];
             lblUser.Visible = true;
 
             btnLogout.Visible = true;

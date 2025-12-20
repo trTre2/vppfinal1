@@ -28,8 +28,8 @@ public partial class additem : System.Web.UI.Page
             
 
             con.Open();
-            SqlCommand deleteCmd = new SqlCommand("DELETE FROM San_Pham", con);
-            deleteCmd.ExecuteNonQuery();
+            //SqlCommand deleteCmd = new SqlCommand("DELETE FROM San_Pham", con);
+            //deleteCmd.ExecuteNonQuery();
             foreach (var p in data)
             {
                 string loai = ConvertTypeToMaLoai(p["type"]);

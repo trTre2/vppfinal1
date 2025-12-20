@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.WebControls;
@@ -19,27 +18,31 @@ public partial class Index : BasePages
             LoadProducts();
         }
     }
-
     private void LoadProducts()
     {
-
-        string query = "SELECT TOP 10 MaSP, TenSP, Gia, AnhSP FROM San_Pham";
-        SqlDataAdapter da = new SqlDataAdapter(query, conn);
         DataTable dt = new DataTable();
-        da.Fill(dt);
-
+        dt = GetProducts.GetTopProduct(8);
         featured_products.DataSource = dt;
         featured_products.DataBind();
+        DataTable dt1 = new DataTable();
+        dt1 = GetProducts.GetTopByType('G',5);
+        paper.DataSource = dt1;
+        paper.DataBind();
+        DataTable dt2 = new DataTable();
+        dt2 = GetProducts.GetTopByType('B',5);
+        pen.DataSource = dt2;
+        pen.DataBind();
+        DataTable dt3 = new DataTable();
+        dt3 = GetProducts.GetTopByType('K',5);
+        other.DataSource = dt3;
+        other.DataBind();
     }
-
     protected void rpSanPham_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
         if (e.CommandName == "AddToCartById")
         {
             int idSP = Convert.ToInt32(e.CommandArgument);
-
             conn.Open();
-
             // Kiểm tra có tồn tại chưa
             SqlCommand check = new SqlCommand(
                 "SELECT SoLuong FROM Cart WHERE idKH=@uid AND idSP=@idSP", conn);
@@ -69,4 +72,9 @@ public partial class Index : BasePages
 
         }
     }
+    protected void Category_Command(object sender, CommandEventArgs e)
+    {
+        Response.Redirect("FrontEnd/ProductsByType.aspx?type=" + e.CommandArgument);
+    }
+
 }
