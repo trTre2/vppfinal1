@@ -5,14 +5,8 @@ using System.Web.UI.WebControls;
 
 public partial class Index : BasePages
 {
-    int userID = -1;
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["UserID"] != null)
-        {
-            string uid = Session["UserID"].ToString();
-            userID = Convert.ToInt32(uid);
-        }
         if (!IsPostBack)
         {
             LoadProducts();
@@ -21,29 +15,45 @@ public partial class Index : BasePages
     private void LoadProducts()
     {
         DataTable dt = new DataTable();
-        dt = GetProducts.GetTopProduct(8);
+        dt = GetProducts.GetTopProduct(10);
         featured_products.DataSource = dt;
         featured_products.DataBind();
         DataTable dt1 = new DataTable();
-        dt1 = GetProducts.GetTopByType('G',5);
+        dt1 = GetProducts.GetTopByType('G', 5,0);
         paper.DataSource = dt1;
         paper.DataBind();
         DataTable dt2 = new DataTable();
-        dt2 = GetProducts.GetTopByType('B',5);
+        dt2 = GetProducts.GetTopByType('B', 5,0);
         pen.DataSource = dt2;
         pen.DataBind();
         DataTable dt3 = new DataTable();
-        dt3 = GetProducts.GetTopByType('K',5);
+        dt3 = GetProducts.GetTopByType('K', 5, 0);
         other.DataSource = dt3;
         other.DataBind();
     }
-    protected void rpSanPham_ItemCommand(object source, RepeaterCommandEventArgs e)
+    protected void Detail_Command(object sender, CommandEventArgs e)
     {
-        if (e.CommandName == "AddToCartById")
+        Response.Redirect("~/FrontEnd/ProductDetail.aspx?id=" + e.CommandArgument);
+    } 
+    protected void Category_Command(object sender, CommandEventArgs e)
+    {
+        Response.Redirect("~/FrontEnd/ProductsByType.aspx?type=" + e.CommandArgument);
+    }
+    protected void AddToCartById(object sender, CommandEventArgs e)
+    {
+        if (Session["ID_KH"] == null)
         {
-            int idSP = Convert.ToInt32(e.CommandArgument);
+            Response.Redirect("~/Login/Login.aspx");
+            return;
+        }
+
+        int userID = Convert.ToInt32(Session["ID_KH"]);
+        int idSP = Convert.ToInt32(e.CommandArgument);
+
+        using (SqlConnection conn = new SqlConnection(vpp))
+        {
             conn.Open();
-            // Kiểm tra có tồn tại chưa
+
             SqlCommand check = new SqlCommand(
                 "SELECT SoLuong FROM Cart WHERE idKH=@uid AND idSP=@idSP", conn);
             check.Parameters.AddWithValue("@uid", userID);
@@ -67,14 +77,7 @@ public partial class Index : BasePages
                 update.Parameters.AddWithValue("@idSP", idSP);
                 update.ExecuteNonQuery();
             }
-
-            conn.Close();
-
         }
-    }
-    protected void Category_Command(object sender, CommandEventArgs e)
-    {
-        Response.Redirect("FrontEnd/ProductsByType.aspx?type=" + e.CommandArgument);
     }
 
 }

@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="User.master.cs" Inherits="User" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="~/User.master.cs" Inherits="User" %>
 
 <!DOCTYPE html>
 <head runat="server">
@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title runat="server"></title>
 
-    <link rel="stylesheet" type="text/css" href="css/UserMaster.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/UserMaster.css" />
 </head>
 
 <body id="pg" runat="server">
@@ -15,8 +15,8 @@
 
             <div class="top-bar" runat="server">
 
-                <asp:HyperLink href="Index.aspx" class="logo" runat="server">
-                <img src="images/logo.png" alt="VPP Online Logo" runat="server" />
+                <asp:HyperLink NavigateUrl="~/Index.aspx" class="logo" runat="server" >
+                <img src="~/images/logo.png" alt="VPP Online Logo" runat="server" />
                 </asp:HyperLink>
 
                 <div class="search-container" runat="server">
@@ -55,17 +55,17 @@
                             <asp:Label ID="lblTotal" runat="server" /></h3>
 
                         <asp:Button ID="btnCheckout" runat="server" Text="Thanh toán"
-                            PostBackUrl="~/Checkout.aspx" />
+                            PostBackUrl="~/FrontEnd/Checkout.aspx" />
                     </div>
 
 
 
                     <div class="auth-links" runat="server" id="AuthLinks">
-                        <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="Login.aspx" Text="Đăng nhập"></asp:HyperLink>
+                        <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Login/Login.aspx" Text="Đăng nhập"></asp:HyperLink>
                         <span id="sep" runat="server">/ </span>
-                        <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="Signup.aspx" Text="Đăng ký"></asp:HyperLink>
+                        <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="~/Login/Signup.aspx" Text="Đăng ký"></asp:HyperLink>
 
-                        <asp:HyperLink runat="server" ID="Redirt" NavigateUrl="Info.aspx"><asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label></asp:HyperLink>
+                        <asp:HyperLink runat="server" ID="Redirt" NavigateUrl="~/FrontEnd/Info.aspx"><asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label></asp:HyperLink>
                         <asp:LinkButton ID="btnLogout" runat="server"
                             OnClick="btnLogout_Click"
                             Visible="false">Đăng xuất</asp:LinkButton>
@@ -78,12 +78,12 @@
             <nav class="main-menu" runat="server">
                 <asp:HyperLink runat="server" NavigateUrl="~/Index.aspx">Trang chủ</asp:HyperLink>
                 <li class="has-submenu" runat="server">
-                    <a runat="server" href="#">Sản phẩm</a>
+                    <a runat="server" >Sản phẩm</a>
 
                     <ul class="submenu" runat="server">
-                        <li runat="server"><a href="#" onclick="redirectToCategory('giay')" runat="server">Giấy</a></li>
-                        <li runat="server"><a href="#" onclick="redirectToCategory('but')" runat="server">Bút</a></li>
-                        <li runat="server"><a href="#" onclick="redirectToCategory('khac')" runat="server">Khác</a></li>
+                        <li runat="server"><asp:LinkButton runat="server" CommandArgument="G" OnCommand="Category_Command">Giấy</asp:LinkButton></li>
+                        <li runat="server"><asp:LinkButton runat="server" CommandArgument="B" OnCommand="Category_Command">Bút</asp:LinkButton></li>
+                        <li runat="server"><asp:LinkButton runat="server" CommandArgument="K" OnCommand="Category_Command">Khác</asp:LinkButton></li>
                     </ul>
 
                 </li>

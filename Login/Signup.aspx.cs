@@ -29,6 +29,6 @@ public partial class Signup : System.Web.UI.Page
         else if (result == -2)
             ClientScript.RegisterStartupScript(GetType(), "a", "alert('Email đã tồn tại');", true);
         else
-            Response.Redirect("Login.aspx");
+            Response.Redirect("~/Login/Login.aspx");
     }
 }

@@ -13,8 +13,8 @@
         <div class="signup-container">
 
             <div class="logo-section">
-                <asp:HyperLink runat="server" NavigateUrl="Index.aspx" CssClass="logo">
-                <img src="images/logo.png" alt="VPP Online Logo" />
+                <asp:HyperLink runat="server" NavigateUrl="../Index.aspx" CssClass="logo">
+                <img src="../images/logo.png" alt="VPP Online Logo" />
                 </asp:HyperLink>
                 <h1>Văn phòng phẩm VPP</h1>
             </div>
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <asp:Button runat="server" OnClick="btnSignup_Click" CssClass="btn-signup" Text="Đăng ký" />
-            <asp:HyperLink runat="server" NavigateUrl="~/Login.aspx" CssClass="signup-link" Text=" Đã có tài khoản? Đăng nhập ngay"></asp:HyperLink>
+            <asp:HyperLink runat="server" NavigateUrl="../Login/Login.aspx" CssClass="signup-link" Text=" Đã có tài khoản? Đăng nhập ngay"></asp:HyperLink>
         </div>
     </form>
 </body>

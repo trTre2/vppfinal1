@@ -19,6 +19,7 @@ public class BasePages : Page
         // TODO: Add constructor logic here
         //
     }
+
 }
 //
 // TODO: Add constructor logic here

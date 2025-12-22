@@ -2,9 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="css/home.css" rel="stylesheet" type="text/css">
-    <div Class="banner">
-    <asp:Image runat="server" ImageUrl="images/banner.png"/>
-        </div>
+    <div class="banner">
+        <asp:Image runat="server" ImageUrl="images/banner.png" />
+    </div>
     <div class="featured-products">
         <h2>Sản phẩm nổi bật</h2>
         <div id="noibat">
@@ -16,13 +16,10 @@
                         CssClass="product-grid">
                         <ItemTemplate>
                             <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
-                                <img src='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
-                                <h4><%# Eval("TenSP") %></h4>
-                                <p class="price"><%# Eval("Gia") %>đ</p>
-                                <button class="add-to-cart"
-                                    onclick="addToCartById(<%# Eval("id") %>, event)">
-                                    Thêm vào giỏ
-                                </button>
+                                <asp:Image runat="server" ImageUrl='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
+                                <asp:Label runat="server"><%# Eval("TenSP") %></asp:Label>
+                                <asp:Label runat="server" CssClass="price"><%# string.Format("{0:N0} đ", Eval("Gia")) %></asp:Label>
+                                <asp:Button runat="server" CssClass="add-to-cart" OnCommand="AddToCartById" CommandArgument='<%# Eval("id") %>' Text="Thêm vào giỏ" />
                             </div>
                         </ItemTemplate>
                     </asp:DataList>
@@ -30,70 +27,60 @@
             </div>
         </div>
     </div>
-    <div class="head-title" >
-        <h3 class="section-title"><asp:LinkButton runat="server" CssClass="head-title" CommandArgument="G" OnCommand="Category_Command">Giấy</asp:LinkButton></h3>
+    <div class="head-title">
+        <asp:LinkButton runat="server" CssClass="head-title" CommandArgument="G" OnCommand="Category_Command"><h3 class="section-title">Giấy</h3></asp:LinkButton>
     </div>
-    <div class="product-grid">
-        <asp:DataList ID="paper" runat="server"
-            RepeatLayout="Flow"
-            RepeatDirection="Horizontal"
-            CssClass = "product-grid">
+    <asp:DataList ID="paper" runat="server"
+        RepeatLayout="Flow"
+        RepeatDirection="Horizontal"
+        CssClass="product-grid">
 
-            <ItemTemplate>
-                <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
-                    <img src='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
-                    <h4><%# Eval("TenSP") %></h4>
-                    <p class="price"><%# Eval("Gia") %>đ</p>
-                    <button class="add-to-cart"
-                        onclick="addToCartById(<%# Eval("id") %>, event)">
-                        Thêm vào giỏ
-                    </button>
-                </div>
-            </ItemTemplate>
-        </asp:DataList>
+        <ItemTemplate>
+            <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
+                <asp:Image runat="server" ImageUrl='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
+                <asp:Label runat="server"><%# Eval("TenSP") %></asp:Label>
+                <asp:Label runat="server" CssClass="price"><%# string.Format("{0:N0} đ", Eval("Gia")) %></asp:Label>
+                <asp:Button runat="server" CssClass="add-to-cart" OnCommand="AddToCartById" CommandArgument='<%# Eval("id") %>' Text="Thêm vào giỏ" />
+            </div>
+        </ItemTemplate>
+    </asp:DataList>
+    <div class="head-title">
+        <asp:LinkButton runat="server" CssClass="head-title" CommandArgument="B" OnCommand="Category_Command"><h3 class="section-title">Bút</h3></asp:LinkButton>
     </div>
-    <div class="head-title" onclick="redirectToCategory('giay')">
-        <h3 class="section-title">Bút</h3>
+    <asp:DataList ID="pen" runat="server"
+        RepeatLayout="Flow"
+        RepeatDirection="Horizontal"
+        CssClass="product-grid">
+        <ItemTemplate>
+            <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
+                <asp:Image runat="server" ImageUrl='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
+                <asp:Label runat="server"><%# Eval("TenSP") %></asp:Label>
+                <asp:Label runat="server" CssClass="price"><%# string.Format("{0:N0} đ", Eval("Gia")) %></asp:Label>
+                <asp:Button runat="server" CssClass="add-to-cart" OnCommand="AddToCartById" CommandArgument='<%# Eval("id") %>' Text="Thêm vào giỏ" />
+            </div>
+        </ItemTemplate>
+    </asp:DataList>
+    <div class="head-title">
+        <asp:LinkButton runat="server" CssClass="head-title" CommandArgument="K" OnCommand="Category_Command"><h3 class="section-title">Các dụng cụ khác</h3></asp:LinkButton>
     </div>
-    <div class="product-grid">
-        <asp:DataList ID="pen" runat="server"
-            RepeatLayout="Flow"
-            RepeatDirection="Horizontal"
-            CssClass="product-grid">
-            <ItemTemplate>
-                <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
-                    <img src='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
-                    <h4><%# Eval("TenSP") %></h4>
-                    <p class="price"><%# Eval("Gia") %>đ</p>
-                    <button class="add-to-cart"
-                        onclick="addToCartById(<%# Eval("id") %>, event)">
-                        Thêm vào giỏ
-                    </button>
-                </div>
-            </ItemTemplate>
-        </asp:DataList>
-    </div>
-    <div class="head-title" onclick="redirectToCategory('giay')">
-        <h3 class="section-title">Các dụng cụ khác</h3>
-    </div>
-    <div class="product-grid">
-        <asp:DataList ID="other" runat="server"
-            RepeatLayout="Flow"
-            RepeatDirection="Horizontal"
-            CssClass="product-grid">
-            <ItemTemplate>
-                <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
-                    <img src='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
-                    <h4><%# Eval("TenSP") %></h4>
-                    <p class="price"><%# Eval("Gia") %>đ</p>
-                    <button class="add-to-cart"
-                        onclick="addToCartById(<%# Eval("id") %>, event)">
-                        Thêm vào giỏ
-                    </button>
-                </div>
-            </ItemTemplate>
-        </asp:DataList>
-    </div>
+    <asp:DataList ID="other" runat="server"
+        RepeatLayout="Flow"
+        RepeatDirection="Horizontal"
+        CssClass="product-grid">
+        <ItemTemplate>
+            <div class="product-item" onclick="selectProduct(<%# Eval("id") %>)">
+                <asp:Image runat="server" ImageUrl='<%# Eval("AnhSP") %>' alt='<%# Eval("TenSP") %>' />
+                <asp:Label runat="server"><%# Eval("TenSP") %></asp:Label>
+                <asp:Label runat="server" CssClass="price"><%# string.Format("{0:N0} đ", Eval("Gia")) %></asp:Label>
+                <asp:Button runat="server" CssClass="add-to-cart" OnCommand="AddToCartById" CommandArgument='<%# Eval("id") %>' Text="Thêm vào giỏ" />
+            </div>
+        </ItemTemplate>
+    </asp:DataList>
+    <script>
+        function selectProduct(id) {
+            window.location.href = 'FrontEnd/ProductDetail.aspx?id=' + id;
+        }
+    </script>
 </asp:Content>
 
 

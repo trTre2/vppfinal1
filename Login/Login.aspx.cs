@@ -18,7 +18,7 @@ public partial class Login : BasePages
                 Response.Redirect("IndexQL.aspx");
             }
             Session["ID_KH"] = user["ID_KH"];
-            Response.Redirect("Index.aspx");
+            Response.Redirect("~/Index.aspx");
         }
         else
         {

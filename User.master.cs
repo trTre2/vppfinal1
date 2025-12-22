@@ -13,12 +13,13 @@ public partial class User : System.Web.UI.MasterPage
 
 protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
+        if (Session["ID_KH"] != null)
         {
+            userID = Convert.ToInt32(Session["ID_KH"]);
+        }
             LoadCart();
             UpdateAuthLinks();
         }
-    }
 
     
     // Load giỏ hàng (đổ ra Repeater rpCart)
@@ -81,6 +82,10 @@ protected void Page_Load(object sender, EventArgs e)
     {
         Session.Clear();
         Session.Abandon();
-        Response.Redirect("Index.aspx");
+        Response.Redirect("~/Index.aspx");
+    }
+    protected void Category_Command(object sender, CommandEventArgs e)
+    {
+        Response.Redirect("~/FrontEnd/ProductsByType.aspx?type=" + e.CommandArgument);
     }
 }
