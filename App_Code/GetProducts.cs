@@ -29,7 +29,7 @@ public class GetProducts : DbConection
     {
         using (SqlConnection con = GetConnection())
         {
-            string sql = "Select top (@top) id,TenSP,AnhSP,Gia from San_Pham where MaLoai = @MaLoai and id != @id";
+            string sql = "Select top (@top) id,TenSP,AnhSP,Gia from San_Pham where MaLoai = @MaLoai and id != @id ORDER BY NEWID();";
             SqlDataAdapter da = new SqlDataAdapter(sql, con);
             da.SelectCommand.Parameters.AddWithValue("@top",top);
             da.SelectCommand.Parameters.AddWithValue("@MaLoai",maLoai);
@@ -43,7 +43,7 @@ public class GetProducts : DbConection
     {
         using (SqlConnection con = GetConnection())
         {
-            string sql = "Select top (@top) id,TenSP,AnhSP,Gia from San_Pham";
+            string sql = "Select top (@top) id,TenSP,AnhSP,Gia from San_Pham ORDER BY NEWID();";
             SqlDataAdapter da = new SqlDataAdapter(sql,con);
             da.SelectCommand.Parameters.AddWithValue("@top", top);
             DataTable dt = new DataTable();
@@ -69,5 +69,17 @@ public class GetProducts : DbConection
             return dt.Rows[0];
         }
     }
-
+    public static DataRow GetAds()
+    {
+        using (SqlConnection con = GetConnection())
+        {
+            string sql = "Select top (1) * from Ads ORDER BY NEWID();";
+            SqlDataAdapter da = new SqlDataAdapter(sql, con);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            if (dt.Rows.Count == 0)
+                return null;
+            return dt.Rows[0];
+        }
+    }
 }

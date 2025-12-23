@@ -20,8 +20,13 @@ protected void Page_Load(object sender, EventArgs e)
             LoadCart();
             UpdateAuthLinks();
         }
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+        LoadCart();
+    }
 
-    
+
     // Load giỏ hàng (đổ ra Repeater rpCart)
     void LoadCart()
     {

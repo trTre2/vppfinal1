@@ -1,34 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class FrontEnd_DetailProduct : BasePages
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Request.QueryString["id"] == null)
+        {
+            Response.Redirect("~/Index.aspx");
+            return;
+        }
+
+        if (!int.TryParse(Request.QueryString["id"], out int id))
+        {
+            Response.Redirect("~/Index.aspx");
+            return;
+        }
+
         if (!IsPostBack)
         {
-            if (Request.QueryString["id"] == null)
-            {
-                Response.Redirect("~/Index.aspx");
-                return;
-            }
-
-            int id;
-            if (!int.TryParse(Request.QueryString["id"], out id))
-            {
-                Response.Redirect("~/Index.aspx");
-                return;
-            }
-
             LoadProduct(id);
         }
     }
+
     private void LoadProduct(int id)
     {
         DataRow row = GetProducts.GetDetail(id);
@@ -38,14 +34,15 @@ public partial class FrontEnd_DetailProduct : BasePages
             Response.Redirect("~/Index.aspx");
             return;
         }
-
+        DataRow dr = GetProducts.GetAds();
+        ads.ImageUrl = $"~/images/ads/{dr["Link_ads"].ToString()}";
         imgProduct.ImageUrl = row["AnhSP"].ToString();
         lblProductTitle.Text = row["TenSP"].ToString();
         lblProductCode.Text = "Mã sản phẩm: " + row["MaSP"];
         lblProductPrice.Text = string.Format("{0:N0} đ", row["Gia"]);
         lblDescription.Text = row["MoTa"].ToString();
         char maLoai = Convert.ToChar(row["MaLoai"]);
-        DataTable dt = GetProducts.GetTopByType(maLoai,5,id);
+        DataTable dt = GetProducts.GetTopByType(maLoai, 5, id);
         dlSameType.DataSource = dt;
         dlSameType.DataBind();
     }
@@ -57,9 +54,9 @@ public partial class FrontEnd_DetailProduct : BasePages
             return;
         }
 
-        if (!int.TryParse(e.CommandArgument?.ToString(), out int idSP))
+        if (!int.TryParse(Request.QueryString["id"], out int idSP))
             return;
-        int.TryParse(txtQuantity.ToString(), out int sl);
+        int.TryParse(txtQuantity.Text, out int sl);
         int userID = Convert.ToInt32(Session["ID_KH"]);
         AddToCart(userID, idSP, sl);
     }
@@ -103,7 +100,7 @@ public partial class FrontEnd_DetailProduct : BasePages
             else
             {
                 SqlCommand update = new SqlCommand(
-                    "UPDATE Cart SET SoLuong = SoLuong + @sl WHERE idKH=@uid AND idSP=@idSP", conn);
+                    "UPDATE Cart SET SoLuong = SoLuong + @sl, NgayThem = GETDATE() WHERE idKH=@uid AND idSP=@idSP", conn);
                 update.Parameters.AddWithValue("@uid", userID);
                 update.Parameters.AddWithValue("@idSP", idSP);
                 update.Parameters.AddWithValue("@sl", quantity);

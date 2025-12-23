@@ -78,13 +78,13 @@ body {
 }
 .product-detail-left{
     display: flex;
-    width: 35%;
+    width: 30%;
     height: 100%;
     justify-content: center;
     align-items: center;
 }
 .product-detail-left img {
-    width: 90%;
+    width: 70%;
     min-width: 150px;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -136,11 +136,6 @@ body {
     margin-top: 20px;
 }
 
-.SoLuong-input {
-    width: 60px;
-    padding: 5px;
-    margin-right: 10px;
-}
 
 .add-to-cart-btn {
     background: #48cfe0;
@@ -149,13 +144,18 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+    z-index:997;
 }
-
+.quantity-input {
+    width: 60px;
+    padding: 5px;
+    margin-right: 10px;
+}
 .add-to-cart-btn:hover {
     background: #1fbcd4;
 }
 .policy-box {
-    min-width: 150px;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -166,11 +166,16 @@ body {
     width: 360px;
     font-size: 14px;
 }
-
+.qc{
+    max-width:250px;
+    object-fit:contain;
+    margin:10px 0
+}
 .policy-section {
     border: 1px solid #e0e0e0;
     margin-bottom: 10px;
     padding: 10px;
+    min-width:250px;
 }
 
 .policy-section h4 {

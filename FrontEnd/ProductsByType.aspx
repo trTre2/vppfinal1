@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="ProductsByType.aspx.cs" Inherits="FrontEnd_ProductsByType" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="ProductsByType.aspx.cs" Inherits="FrontEnd_ProductsByType" MaintainScrollPositionOnPostBack="true"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="<%= ResolveUrl("~/css/category.css") %>" rel="stylesheet" type="text/css"/>

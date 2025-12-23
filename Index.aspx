@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="Index.aspx.cs" Inherits="Index" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="Index.aspx.cs" Inherits="Index" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="css/home.css" rel="stylesheet" type="text/css">
     <div class="banner">
-        <asp:Image runat="server" ImageUrl="images/banner.png" />
+        <asp:Image ID="ads" runat="server" AlternateText="Quảng cáo" />
     </div>
     <div class="featured-products">
         <h2>Sản phẩm nổi bật</h2>

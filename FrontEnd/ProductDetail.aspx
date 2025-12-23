@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="ProductDetail.aspx.cs" Inherits="FrontEnd_DetailProduct" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="ProductDetail.aspx.cs" Inherits="FrontEnd_DetailProduct" MaintainScrollPositionOnPostBack="true"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
         <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/css/products.css") %>" />
@@ -69,7 +69,7 @@
                 <p>🏠 Chính hãng 100%</p>
                 <p>👤 Đổi trả, khiếu nại sản phẩm</p>
             </div>
-
+            <asp:Image ID="ads" CssClass="qc" runat="server" AlternateText="Quảng cáo" />
             <div class="policy-section">
                 <h4>CHÍNH SÁCH KHÁC</h4>
                 <p>🚚 Giao hàng tận nơi</p>

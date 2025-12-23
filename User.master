@@ -11,6 +11,11 @@
 
 <body id="pg" runat="server">
     <form runat="server">
+        <asp:ScriptManager
+        ID="ScriptManager1"
+        runat="server"
+        EnablePartialRendering="true" />
+
         <header id="header" runat="server">
 
             <div class="top-bar" runat="server">

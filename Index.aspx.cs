@@ -14,6 +14,8 @@ public partial class Index : BasePages
     }
     private void LoadProducts()
     {
+        DataRow dr = GetProducts.GetAds();
+        ads.ImageUrl = $"~/images/ads/{dr["Link_ads"].ToString()}";
         DataTable dt = new DataTable();
         dt = GetProducts.GetTopProduct(10);
         featured_products.DataSource = dt;
