@@ -12,6 +12,28 @@ public class GetProducts : DbConection
         // TODO: Add constructor logic here
         //
     }
+    public static DataTable GetCartById(int id)
+    {
+        using (SqlConnection con = GetConnection())
+        {
+            string sql = @"
+            SELECT 
+                c.SoLuong, 
+                s.TenSP, 
+                s.Gia, 
+                s.AnhSP,
+                s.id AS idSP
+            FROM Cart c 
+            JOIN San_Pham s ON c.idSP = s.id
+            WHERE c.idKH = @uid";
+
+            SqlDataAdapter da = new SqlDataAdapter(sql, con);
+            da.SelectCommand.Parameters.AddWithValue("@uid", id);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
+    }
     public static DataTable GetProductsByType(string maLoai)
     {
         using (SqlConnection con = GetConnection())

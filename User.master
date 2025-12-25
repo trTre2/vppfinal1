@@ -95,8 +95,8 @@
 
                 <asp:HyperLink href="#" runat="server">Khuyến mãi</asp:HyperLink>
                 <asp:HyperLink href="#" runat="server">Hướng dẫn</asp:HyperLink>
-                <asp:HyperLink href="checkout.aspx" runat="server">Thanh toán</asp:HyperLink>
-                <asp:HyperLink href="about.aspx" runat="server">Về chúng tôi</asp:HyperLink>
+                <asp:HyperLink NavigateUrl="~/FrontEnd/Checkout.aspx" runat="server">Thanh toán</asp:HyperLink>
+                <asp:HyperLink NavigateUrl="~/FrontEnd/Checkout.aspx" runat="server">Về chúng tôi</asp:HyperLink>
 
             </nav>
 

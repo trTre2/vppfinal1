@@ -30,23 +30,7 @@ protected void Page_Load(object sender, EventArgs e)
     // Load giỏ hàng (đổ ra Repeater rpCart)
     void LoadCart()
     {
-        string sql = @"
-            SELECT 
-                c.SoLuong, 
-                s.TenSP, 
-                s.Gia, 
-                s.AnhSP,
-                s.id AS idSP
-            FROM Cart c 
-            JOIN San_Pham s ON c.idSP = s.id
-            WHERE c.idKH = @uid";
-
-        SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-        da.SelectCommand.Parameters.AddWithValue("@uid", userID);
-
-        DataTable dt = new DataTable();
-        da.Fill(dt);
-
+        DataTable dt = GetProducts.GetCartById(userID);
         rpCart.DataSource = dt;
         rpCart.DataBind();
 
