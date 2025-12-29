@@ -117,6 +117,41 @@ body {
     cursor: pointer;
 }
 /* Khi bật hiển thị */
+.header-search {
+    position: relative;
+}
+
+.search-box {
+    width: 260px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #48cfe0;
+    font-size: 14px;
+}
+
+#searchResult {
+    position: absolute;
+    top: 38px;
+    width: 260px;
+    background: #fff;
+    border: 1px solid #ccc;
+    z-index: 9999;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.search-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+    .search-item:hover {
+        background: #48cfe0;
+        color: #fff;
+    }
+
 .show {
     display: block !important;
 }

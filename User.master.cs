@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Services;
 using System.Web.UI.WebControls;
 
 public partial class User : System.Web.UI.MasterPage
 {
     int userID;
-    SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["vpp"].ConnectionString);
 
 
 protected void Page_Load(object sender, EventArgs e)
@@ -77,4 +78,5 @@ protected void Page_Load(object sender, EventArgs e)
     {
         Response.Redirect("~/FrontEnd/ProductsByType.aspx?type=" + e.CommandArgument);
     }
+   
 }

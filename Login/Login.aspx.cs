@@ -15,7 +15,8 @@ public partial class Login : BasePages
             string role = user["Role"].ToString();
             if (role == "admin" || role == "limited")
             {
-                Response.Redirect("IndexQL.aspx");
+                Session["TenKH"] = user["Role"];
+                Response.Redirect("~/BackEnd/QLSanPham.aspx");
             }
             Session["ID_KH"] = user["ID_KH"];
             Response.Redirect("~/Index.aspx");

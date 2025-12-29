@@ -1,3 +1,10 @@
+
+.product-filter {
+    margin-top:10px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
 #checkout {
     background-color: #48cfe0;
     float: right;

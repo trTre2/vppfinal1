@@ -3,6 +3,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="<%= ResolveUrl("~/css/category.css") %>" rel="stylesheet" type="text/css"/>
     <main id="main">
+        <div class="product-filter">
+    <div class="filter-box">
+        <label>Loại sản phẩm:</label>
+        <asp:DropDownList 
+            ID="ddlLoai" 
+            runat="server" 
+            CssClass="ddl-filter"
+            OnSelectedIndexChanged="ddlLoai_SelectedIndexChanged"
+            AutoPostBack="true">
+        </asp:DropDownList>
+    </div>
+</div>
         <h2 style="margin: 30px 0;">CÁC SẢN PHẨM CÙNG LOẠI ĐÃ CHỌN</h2>
         <div class="sanpham">
             <asp:DataList ID="bytype" runat="server"

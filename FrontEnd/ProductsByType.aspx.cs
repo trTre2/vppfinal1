@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class FrontEnd_ProductsByType : BasePages
 {
-    //char temp;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
+            LoadLoai(); 
+
             string type = Request.QueryString["type"];
 
             if (string.IsNullOrEmpty(type))
@@ -20,12 +19,10 @@ public partial class FrontEnd_ProductsByType : BasePages
                 Response.Redirect("~/Index.aspx");
                 return;
             }
-            //if (type == "G")
-            //    temp = 'G';
-            //else if (type == "B")
-            //    temp = 'B';
-            //else
-            //    temp = 'K';
+
+            if (ddlLoai.Items.FindByValue(type) != null)
+                ddlLoai.SelectedValue = type;
+
             LoadProducts(type);
         }
     }
@@ -35,6 +32,29 @@ public partial class FrontEnd_ProductsByType : BasePages
         bytype.DataSource = GetProducts.GetProductsByType(maLoai);
         bytype.DataBind();
     }
+
+    void LoadLoai()
+    {
+        DataTable dt = GetProducts.GetLoaiSP();
+
+        ddlLoai.DataSource = dt;
+        ddlLoai.DataTextField = "TenLoai";
+        ddlLoai.DataValueField = "MaLoai";
+        ddlLoai.DataBind();
+
+        ddlLoai.Items.Insert(0, new ListItem("-- Chọn loại --", "0"));
+    }
+
+    protected void ddlLoai_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string loai = ddlLoai.SelectedValue;
+
+        if (loai == "0")
+            Response.Redirect("~/Index.aspx");
+        else
+            Response.Redirect("~/FrontEnd/ProductsByType.aspx?type=" + loai);
+    }
+
     protected void AddToCartById(object sender, CommandEventArgs e)
     {
         if (Session["ID_KH"] == null)

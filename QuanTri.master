@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="QuanTri.master.cs" Inherits="QuanTri" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title runat="server"></title>
+
+    <link rel="stylesheet" type="text/css" href="~/css/UserMaster.css" />
+</head>
+<body id="pg" runat="server">
+    <form runat="server">
+        <asp:ScriptManager
+            ID="ScriptManager1"
+            runat="server"
+            EnablePartialRendering="true" />
+        <header id="header" runat="server">
+            <div class="top-bar" runat="server">
+                <img style="height: 60px;margin-left: 10px;" src="~/images/logo.png" alt="VPP Online Logo" runat="server" />
+                <div class="user-actions" runat="server">
+                    <div class="auth-links" runat="server" id="AuthLinks">
+                        <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Login/Login.aspx" Text="Đăng nhập"></asp:HyperLink>
+                        <span id="sep" runat="server">/ </span>
+                        <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="~/Login/Signup.aspx" Text="Đăng ký"></asp:HyperLink>
+                            <asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label>
+                        <asp:LinkButton ID="btnLogout" runat="server"
+                            OnClick="btnLogout_Click"
+                            Visible="false">Đăng xuất</asp:LinkButton>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <nav class="main-menu" runat="server">
+                <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLSanPham.aspx">Quản lí sản phẩm</asp:HyperLink>
+                <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLDonHang.aspx">Quản lí đơn hàng</asp:HyperLink>
+                <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLTaiKhoan.aspx">Quản lí tài khoản</asp:HyperLink>
+                <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLLoaiHang.aspx">Quản lí loại hàng</asp:HyperLink>
+
+
+            </nav>
+
+        </header>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>

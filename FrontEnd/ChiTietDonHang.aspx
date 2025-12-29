@@ -1,13 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ChiTietDonHang.aspx.cs" Inherits="FrontEnd_ChiTietDonHang" %>
+﻿<%@ Page Title="Chi tiết đơn hàng" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="ChiTietDonHang.aspx.cs" Inherits="FrontEnd_ChiTietDonHang" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Chi tiết đơn hàng</title>
-</head>
-<body>
-    <form id="form1" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+            <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/css/checkout.css") %>" />
         <div>
 
 <h1>Chi tiết đơn hàng</h1>
@@ -22,7 +16,7 @@
     <Columns>
         <asp:BoundField DataField="TenSP" HeaderText="Sản phẩm" />
         <asp:BoundField DataField="SoLuong" HeaderText="SL" />
-        <asp:BoundField DataField="Gia" HeaderText="Đơn giá" DataFormatString="{0:N0}" />
+        <asp:BoundField DataField="DonGia" HeaderText="Đơn giá" DataFormatString="{0:N0}" />
         <asp:TemplateField HeaderText="Thành tiền">
             <ItemTemplate>
                 <%# Eval("ThanhTien", "{0:N0}") %>
@@ -39,6 +33,4 @@
 </div>
 
         </div>
-    </form>
-</body>
-</html>
+</asp:Content>

@@ -12,23 +12,25 @@
 <body id="pg" runat="server">
     <form runat="server">
         <asp:ScriptManager
-        ID="ScriptManager1"
-        runat="server"
-        EnablePartialRendering="true" />
-
+            ID="ScriptManager1"
+            runat="server"
+            EnablePartialRendering="true" />
         <header id="header" runat="server">
-
             <div class="top-bar" runat="server">
-
-                <asp:HyperLink NavigateUrl="~/Index.aspx" class="logo" runat="server" >
+                <asp:HyperLink NavigateUrl="~/Index.aspx" class="logo" runat="server">
                 <img src="~/images/logo.png" alt="VPP Online Logo" runat="server" />
                 </asp:HyperLink>
 
-                <div class="search-container" runat="server">
-                    <asp:TextBox ID="search" placeholder="Tìm kiếm sản phẩm..." runat="server" />
-                    <asp:Button class="search-btn" ID="searchbtn" Text="Tìm Kiếm" runat="server"></asp:Button>
+                <div class="header-search">
+                    <asp:TextBox
+                        ID="txtSearch"
+                        runat="server"
+                        CssClass="search-box"
+                        placeholder="Tìm sản phẩm..."
+                        onkeyup="liveSearch(this.value)">
+                    </asp:TextBox>
+                    <div id="searchResult"></div>
                 </div>
-
                 <div class="user-actions" runat="server">
 
                     <!-- Nút mở giỏ -->
@@ -70,7 +72,9 @@
                         <span id="sep" runat="server">/ </span>
                         <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="~/Login/Signup.aspx" Text="Đăng ký"></asp:HyperLink>
 
-                        <asp:HyperLink runat="server" ID="Redirt" NavigateUrl="~/FrontEnd/Info.aspx"><asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label></asp:HyperLink>
+                        <asp:HyperLink runat="server" ID="Redirt" NavigateUrl="~/FrontEnd/UserInfo.aspx">
+                            <asp:Label ID="lblUser" runat="server" Visible="false"></asp:Label>
+                        </asp:HyperLink>
                         <asp:LinkButton ID="btnLogout" runat="server"
                             OnClick="btnLogout_Click"
                             Visible="false">Đăng xuất</asp:LinkButton>
@@ -83,20 +87,20 @@
             <nav class="main-menu" runat="server">
                 <asp:HyperLink runat="server" NavigateUrl="~/Index.aspx">Trang chủ</asp:HyperLink>
                 <li class="has-submenu" runat="server">
-                    <a runat="server" >Sản phẩm</a>
+                    <a runat="server">Sản phẩm</a>
 
                     <ul class="submenu" runat="server">
-                        <li runat="server"><asp:LinkButton runat="server" CommandArgument="G" OnCommand="Category_Command">Giấy</asp:LinkButton></li>
-                        <li runat="server"><asp:LinkButton runat="server" CommandArgument="B" OnCommand="Category_Command">Bút</asp:LinkButton></li>
-                        <li runat="server"><asp:LinkButton runat="server" CommandArgument="K" OnCommand="Category_Command">Khác</asp:LinkButton></li>
+                        <li runat="server">
+                            <asp:LinkButton runat="server" CommandArgument="G" OnCommand="Category_Command">Giấy</asp:LinkButton></li>
+                        <li runat="server">
+                            <asp:LinkButton runat="server" CommandArgument="B" OnCommand="Category_Command">Bút</asp:LinkButton></li>
+                        <li runat="server">
+                            <asp:LinkButton runat="server" CommandArgument="K" OnCommand="Category_Command">Khác</asp:LinkButton></li>
                     </ul>
 
                 </li>
 
-                <asp:HyperLink href="#" runat="server">Khuyến mãi</asp:HyperLink>
-                <asp:HyperLink href="#" runat="server">Hướng dẫn</asp:HyperLink>
                 <asp:HyperLink NavigateUrl="~/FrontEnd/Checkout.aspx" runat="server">Thanh toán</asp:HyperLink>
-                <asp:HyperLink NavigateUrl="~/FrontEnd/Checkout.aspx" runat="server">Về chúng tôi</asp:HyperLink>
 
             </nav>
 
@@ -142,6 +146,44 @@
             document.getElementById('cartOverlay').style.display = 'none';
             document.getElementById('cartPopup').style.display = 'none';
         }
+        let searchTimer = null;
+
+        function liveSearch(key) {
+            clearTimeout(searchTimer);
+
+            if (key.trim() === "") {
+                document.getElementById("searchResult").style.display = "none";
+                return;
+            }
+
+            searchTimer = setTimeout(() => {
+                fetch("/SearchHandler.aspx?key=" + encodeURIComponent(key))
+                    .then(res => res.json())
+                    .then(data => renderSearch(data));
+            }, 300);
+        }
+
+        function renderSearch(list) {
+            const box = document.getElementById("searchResult");
+
+            if (!list || list.length === 0) {
+                box.style.display = "none";
+                return;
+            }
+
+            let html = "";
+            list.forEach(sp => {
+                html += `
+                <div class="search-item"
+                     onclick="location.href='/FrontEnd/ProductDetail.aspx?id=${sp.Id}'">
+                    ${sp.TenSP} - ${sp.Gia}
+                </div>`;
+            });
+
+            box.innerHTML = html;
+            box.style.display = "block";
+        }
     </script>
+
 
 </body>

@@ -49,12 +49,12 @@ public partial class FrontEnd_CheckOut : System.Web.UI.Page
 
         try
         {
-            GetOrder.CreateOrderFromCart(idKH);
-        
+            int result = GetOrder.CreateOrderFromCart(idKH); 
+            string link = "ChiTietDonHang.aspx?MaDH=" + result;
             ClientScript.RegisterStartupScript(
                 this.GetType(),
                 "ok",
-                "alert('Đặt hàng thành công!'); window.location='ChiTietDonHang.aspx';",
+                $"alert('Đặt hàng thành công!'); window.location='{link}';",
                 true
             );
         }

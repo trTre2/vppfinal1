@@ -91,6 +91,18 @@ public class GetProducts : DbConection
             return dt.Rows[0];
         }
     }
+    public static DataTable GetLoaiSP()
+    {
+        using (SqlConnection con = GetConnection())
+        using (SqlCommand cmd = new SqlCommand(
+            "SELECT MaLoai, TenLoai FROM LoaiSP", con))
+        {
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
+    }
     public static DataRow GetAds()
     {
         using (SqlConnection con = GetConnection())

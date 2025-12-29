@@ -17,25 +17,29 @@ public class GetOrder : DbConection
         // TODO: Add constructor logic here
         //
     }
-    public static void CreateOrderFromCart(int id)
+    public static int CreateOrderFromCart(int id)
     {
         using (SqlConnection con = GetConnection())
         {
             SqlCommand cmd = new SqlCommand("sp_CreateOrderFromCart", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            cmd.Parameters.Add("@idKH", SqlDbType.Int).Value = id;
+            con.Open();
 
-        }
+            return (int)cmd.ExecuteScalar();
+            
+    }
     }
     public static DataTable GetOrderDetail(int maDH)
     {
         using (SqlConnection con = GetConnection())
         {
-            string query = "SELECT * FROM ChiTietDonHang RIGHT JOIN DonHang WHERE MaDH = @maDH";
+            string query = "SELECT TenSP,SoLuong,DonGia,TongTien,TrangThai,a.SoLuong * DonGia AS ThanhTien FROM ChiTietDonHang a INNER JOIN DonHang b on a.MaDH = b.MaDH inner join San_Pham c on a.idSP = c.id where a.MaDH = @maDH";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.CommandType = CommandType.Text;
-            cmd.Parameters.Add("@maDH", SqlDbType.Int).Value = maDH;
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            SqlDataAdapter da = new SqlDataAdapter(query, con);
+            cmd.Parameters.AddWithValue("@maDH", maDH);
+            da.SelectCommand.Parameters.AddWithValue("@maDH", maDH);
             DataTable dt = new DataTable();
             da.Fill(dt);
             return dt;
