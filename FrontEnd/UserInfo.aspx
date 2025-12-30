@@ -4,29 +4,21 @@
                 <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/css/profile.css") %>" />
    <div id="container">
     <div class="profile-box">
-
-    <!-- TÊN -->
     <div class="row">
         <span class="title">Tên khách hàng</span>
         <asp:Label ID="lblTenKH" runat="server" />
         <asp:TextBox ID="txtTenKH" runat="server" CssClass="input" Visible="false" />
     </div>
-
-    <!-- ĐIỆN THOẠI -->
     <div class="row">
         <span class="title">Số điện thoại</span>
         <asp:Label ID="lblPhone" runat="server" />
         <asp:TextBox ID="txtPhone" runat="server" CssClass="input" Visible="false" />
     </div>
-
-    <!-- ĐỊA CHỈ -->
     <div class="row">
         <span class="title">Địa chỉ</span>
         <asp:Label ID="lblDiaChi" runat="server" />
         <asp:TextBox ID="txtDiaChi" runat="server" CssClass="input" Visible="false" />
     </div>
-
-    <!-- EMAIL -->
     <div class="row">
         <span class="title">Email</span>
         <asp:Label ID="lblEmail" runat="server" />

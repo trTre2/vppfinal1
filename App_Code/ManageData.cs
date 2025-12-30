@@ -89,7 +89,6 @@ public class ManageData : DbConection
 
         return count > 0;
     }
-    // ===== LOAD SẢN PHẨM =====
     public static DataTable GetSanPham()
     {
         string sql = @"SELECT id, MaSP, TenSP, Gia, MaLoai, MoTa, TinhTrang, AnhSP 
@@ -98,6 +97,31 @@ public class ManageData : DbConection
         DataTable dt = new DataTable();
         da.Fill(dt);
         return dt;
+    }
+    public static DataTable GetAllLoai()
+    {
+        using (SqlConnection con = DbConection.GetConnection())
+        {
+            string sql = "SELECT MaLoai, TenLoai FROM LoaiSP";
+            SqlDataAdapter da = new SqlDataAdapter(sql, con);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
+    }
+
+    public static DataTable GetSanPhamByLoai(string maloai)
+    {
+        using (SqlConnection con = DbConection.GetConnection())
+        {
+            string sql = @"SELECT * FROM San_Pham WHERE MaLoai=@maloai";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@maloai", maloai);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
     }
     public static void InsertSanPham(string maloai, string tensp, decimal gia, string mota, string tinhtrang, string anh)
     {
@@ -307,4 +331,111 @@ public class ManageData : DbConection
             cmd.ExecuteNonQuery();
         }
     }
+    public static DataTable GetDonHangFilter(string idKH, string trangThai)
+    {
+        DataTable dt = new DataTable();
+
+        string sql = @"
+        SELECT d.MaDH, k.TenKH, k.PhoneNumber, d.NgayDat, d.TrangThai,
+               SUM(ct.SoLuong * sp.Gia) AS TongTien
+        FROM DonHang d
+        JOIN KhachHang k ON d.idKH = k.id
+        JOIN ChiTietDonHang ct ON d.MaDH = ct.MaDH
+        JOIN San_Pham sp ON ct.idSP = sp.id
+        WHERE (@idKH = '' OR d.idKH = @idKH)
+          AND (@TrangThai = '' OR d.TrangThai = @TrangThai)
+        GROUP BY d.MaDH, k.TenKH, k.PhoneNumber, d.NgayDat, d.TrangThai
+        ORDER BY d.MaDH DESC";
+
+        using (SqlConnection con = DbConection.GetConnection())
+        using (SqlCommand cmd = new SqlCommand(sql, con))
+        {
+            cmd.Parameters.AddWithValue("@idKH", idKH ?? "");
+            cmd.Parameters.AddWithValue("@TrangThai", trangThai ?? "");
+
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                da.Fill(dt);
+            }
+        }
+        return dt;
+    }
+
+
+    public static void DeleteDonHang(int maDH)
+    {
+        using (SqlConnection con = DbConection.GetConnection())
+        {
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand(@"
+            DELETE FROM ChiTietDonHang WHERE MaDH=@MaDH;
+            DELETE FROM DonHang WHERE MaDH=@MaDH;", con);
+
+            cmd.Parameters.AddWithValue("@MaDH", maDH);
+            cmd.ExecuteNonQuery();
+        }
+    }
+    public static DataTable GetAllAds()
+    {
+        string sql = "SELECT * FROM Ads";
+        using (SqlConnection con = DbConection.GetConnection())
+        using (SqlDataAdapter da = new SqlDataAdapter(sql, con))
+        {
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
+        }
+    }
+
+    public static void InsertAds(string link, string doiTac, DateTime? ngayHetHan, bool isActive)
+    {
+        string sql = @"INSERT INTO Ads(Link_Ads, TenDoiTac, NgayHetHan, IsActive)
+                       VALUES(@link,@doiTac,@ngayHetHan,@isActive)";
+        using (SqlConnection con = DbConection.GetConnection())
+        using (SqlCommand cmd = new SqlCommand(sql, con))
+        {
+            cmd.Parameters.AddWithValue("@link", link);
+            cmd.Parameters.AddWithValue("@doiTac", (object)doiTac ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@ngayHetHan", (object)ngayHetHan ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@isActive", isActive);
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+
+    public static void UpdateAds(int id, string link, string doiTac, DateTime? ngayHetHan, bool isActive)
+    {
+        string sql = @"UPDATE Ads SET 
+                       Link_Ads = COALESCE(@link, Link_Ads),
+                       TenDoiTac = @doiTac,
+                       NgayHetHan = @ngayHetHan,
+                       IsActive = @isActive
+                       WHERE id=@id";
+        using (SqlConnection con = DbConection.GetConnection())
+        using (SqlCommand cmd = new SqlCommand(sql, con))
+        {
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@link", (object)link ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@doiTac", (object)doiTac ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@ngayHetHan", (object)ngayHetHan ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@isActive", isActive);
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+
+    public static void DeleteAds(int id)
+    {
+        string sql = "DELETE FROM Ads WHERE id=@id";
+        using (SqlConnection con = DbConection.GetConnection())
+        using (SqlCommand cmd = new SqlCommand(sql, con))
+        {
+            cmd.Parameters.AddWithValue("@id", id);
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+
+
 }

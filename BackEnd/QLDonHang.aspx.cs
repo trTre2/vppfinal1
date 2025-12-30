@@ -34,6 +34,7 @@ private DataTable DonHangTemp
         if (!IsPostBack)
         {
             LoadDonHang();
+            LoadKhachHangFilter();
             ddlKhachHang.DataSource = ManageData.GetKhachHang();
             ddlKhachHang.DataTextField = "TenKH";
             ddlKhachHang.DataValueField = "id";
@@ -42,15 +43,12 @@ private DataTable DonHangTemp
             gvDonHangTemp.DataBind();
         }
     }
-
-    // Tìm sản phẩm
     protected void btnTimSP_Click(object sender, EventArgs e)
     {
         gvTimSP.DataSource = ManageData.GetSanPhamByName(txtTimSP.Text.Trim());
         gvTimSP.DataBind();
     }
 
-    // Thêm SP vào đơn tạm
     protected void btnThemSP_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
@@ -80,7 +78,29 @@ private DataTable DonHangTemp
         gvDonHangTemp.DataBind();
     }
 
-    // Xóa SP khỏi đơn tạm
+    void LoadDonHang()
+    {
+        string idKH = ddlKhachHangFilter.SelectedValue;
+        string trangThai = ddlTrangThaiFilter.SelectedValue;
+
+        gvDonHang.DataSource = ManageData.GetDonHangFilter(idKH, trangThai);
+        gvDonHang.DataBind();
+    }
+
+    protected void Filter_Changed(object sender, EventArgs e)
+    {
+        LoadDonHang();
+    }
+    void LoadKhachHangFilter()
+    {
+        DataTable dt = ManageData.GetKhachHang();
+        ddlKhachHangFilter.DataSource = dt;
+        ddlKhachHangFilter.DataTextField = "TenKH";
+        ddlKhachHangFilter.DataValueField = "id";
+        ddlKhachHangFilter.DataBind();
+        ddlKhachHangFilter.Items.Insert(0, new ListItem("Tất cả khách hàng", ""));
+    }
+
     protected void btnXoaSP_Click(object sender, EventArgs e)
     {
         Button btn = (Button)sender;
@@ -92,11 +112,7 @@ private DataTable DonHangTemp
         gvDonHangTemp.DataSource = dt;
         gvDonHangTemp.DataBind();
     }
-    private void LoadDonHang()
-    {
-        gvDonHang.DataSource = ManageData.GetDonHang();
-        gvDonHang.DataBind();
-    }
+    
     // Lưu đơn hàng
     protected void btnLuuDon_Click(object sender, EventArgs e)
     {
@@ -124,6 +140,23 @@ private DataTable DonHangTemp
         lblThongBao.Text = "Thêm đơn hàng thành công!";
         LoadDonHang();
     }
+    protected void gvDonHang_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow && gvDonHang.EditIndex != e.Row.RowIndex)
+        {
+            string maDH = gvDonHang.DataKeys[e.Row.RowIndex].Value.ToString();
+
+            string url = ResolveUrl("~/BackEnd/ChiTietDonHang.aspx?MaDH=" + maDH);
+
+            for (int i = 0; i < e.Row.Cells.Count - 1; i++)
+            {
+                e.Row.Cells[i].Attributes["onclick"] =
+                    $"window.location='{url}'";
+                e.Row.Cells[i].Style["cursor"] = "pointer";
+            }
+        }
+    }
+
 
     protected void gvDonHang_RowEditing(object sender, GridViewEditEventArgs e)
     {
@@ -151,4 +184,12 @@ private DataTable DonHangTemp
         gvDonHang.EditIndex = -1;
         LoadDonHang();
     }
+    protected void gvDonHang_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        int maDH = Convert.ToInt32(gvDonHang.DataKeys[e.RowIndex].Value);
+
+        ManageData.DeleteDonHang(maDH);
+        LoadDonHang();
+    }
+
 }

@@ -1,11 +1,11 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/QuanTri.master" AutoEventWireup="true" CodeFile="QLLoaiHang.aspx.cs" Inherits="BackEnd_QLLoaiHang" %>
+﻿<%@ Page Title="Quản lý loại hàng" Language="C#" MasterPageFile="~/QuanTri.master" AutoEventWireup="true" CodeFile="QLLoaiHang.aspx.cs" Inherits="BackEnd_QLLoaiHang" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
         <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/css/GridviewQL.css") %>" />
 
 <div id="container">
     <div class="profile-box">
-        <h3>QUẢN LÝ LOẠI SẢN PHẨM</h3>
+        <h3>THÊM MỚI LOẠI SẢN PHẨM</h3>
 
         <div class="row">
             <span class="title">Mã loại (1 ký tự)</span>

@@ -16,7 +16,14 @@ public partial class QuanTri : System.Web.UI.MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        UpdateAuthLinks();
+        if (Session["Role"] != null)
+        {
+            UpdateAuthLinks();
+        }
+        else
+                    {
+            Response.Redirect("~/Index.aspx");
+        }
     }
 
 

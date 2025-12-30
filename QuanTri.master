@@ -39,6 +39,7 @@
                 <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLDonHang.aspx">Quản lí đơn hàng</asp:HyperLink>
                 <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLTaiKhoan.aspx">Quản lí tài khoản</asp:HyperLink>
                 <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLLoaiHang.aspx">Quản lí loại hàng</asp:HyperLink>
+                <asp:HyperLink runat="server" NavigateUrl="~/BackEnd/QLBannerQC.aspx">Quản lí loại hàng</asp:HyperLink>
 
 
             </nav>

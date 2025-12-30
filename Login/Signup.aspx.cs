@@ -20,6 +20,7 @@ public partial class Signup : System.Web.UI.Page
             TenKH.Text.Trim(),
             Phone.Text.Trim(),
             Address.Text.Trim(),
+            "customer",
             Username.Text.Trim(),
             Password.Text.Trim()
         );

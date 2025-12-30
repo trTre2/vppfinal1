@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/QuanTri.master" AutoEventWireup="true" CodeFile="QLSanPham.aspx.cs" Inherits="BackEnd_QLSanPham" %>
+﻿<%@ Page Title="Quản lý sản phẩm" Language="C#" MasterPageFile="~/QuanTri.master" AutoEventWireup="true" CodeFile="QLSanPham.aspx.cs" Inherits="BackEnd_QLSanPham" %>
 <%@ Register Assembly="FreeTextBox"
     Namespace="FreeTextBoxControls"
     TagPrefix="FTB" %>
@@ -7,8 +7,8 @@
         <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/css/GridviewQL.css") %>" />
 
 <div id="container">
-    <div class="profile-box" id="left" runat="server">
-        <h3>QUẢN LÝ SẢN PHẨM</h3>
+    <div class="profile-box" id="left" runat="server" style="width: 350px">
+        <h3>THÊM SẢN PHẨM MỚI</h3>
 
         <div class="row">
             <span class="title">Loại sản phẩm</span>
@@ -52,7 +52,10 @@
     </div>
     <div class="profile-box" id="right" runat="server">
         <h3>DANH SÁCH SẢN PHẨM</h3>
-
+        <asp:DropDownList ID="ddlLoaiFilter" runat="server"
+    AutoPostBack="true"
+    OnSelectedIndexChanged="ddlLoaiFilter_SelectedIndexChanged"
+    CssClass="input" />
         <asp:GridView ID="gvSanPham" runat="server"
     CssClass="table"
     AutoGenerateColumns="False"
@@ -61,7 +64,7 @@
     OnRowUpdating="gv_RowUpdating"
     OnRowCancelingEdit="gv_RowCancelingEdit"
     OnRowDeleting="gv_RowDeleting"
-    OnRowDataBound="gv_RowDataBound">
+    OnRowDataBound="gv_RowDataBound1">
 
     <Columns>
 

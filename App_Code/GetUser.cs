@@ -28,7 +28,8 @@ public class GetUser : DbConection
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
     }
-    public static int Signup(string email,string tenKH,string phone,string diaChi,string username,string password)
+    public static int Signup(string email, string tenKH, string phone, string diaChi,
+                         string role, string username, string password)
     {
         using (SqlConnection con = DbConection.GetConnection())
         {
@@ -37,13 +38,14 @@ public class GetUser : DbConection
 
             cmd.Parameters.AddWithValue("@Email", email);
             cmd.Parameters.AddWithValue("@TenKH", tenKH);
-            cmd.Parameters.AddWithValue("@Phone", string.IsNullOrEmpty(phone) ? (object)DBNull.Value : phone);
-            cmd.Parameters.AddWithValue("@DiaChi", string.IsNullOrEmpty(diaChi) ? (object)DBNull.Value : diaChi);
+            cmd.Parameters.AddWithValue("@Phone", phone);
+            cmd.Parameters.AddWithValue("@DiaChi", diaChi);
             cmd.Parameters.AddWithValue("@Username", username);
             cmd.Parameters.AddWithValue("@Password", password);
+            cmd.Parameters.AddWithValue("@Role", role);
 
             con.Open();
-            return (int)cmd.ExecuteScalar();
+            return Convert.ToInt32(cmd.ExecuteScalar());
         }
     }
     public static DataTable GetProfileByAccountID(int accId)
@@ -71,7 +73,7 @@ public class GetUser : DbConection
         using (SqlConnection con = DbConection.GetConnection())
         {
             string sql = @"
-        SELECT u.ID, u.Username, u.Role, k.id AS ID_KH,
+        SELECT u.ID, u.Username,u.Password, u.Role, k.id AS ID_KH,
                k.TenKH, k.Email, k.PhoneNumber, k.DiaChi
         FROM Users u
         LEFT JOIN KhachHang k ON u.ID_KH = k.id";
@@ -81,23 +83,61 @@ public class GetUser : DbConection
             return dt;
         }
     }
-
-    public static void InsertUser(string username, string password, string role, int? idKH)
+    public static void UpdateUser(int id, string role, string password)
     {
         using (SqlConnection con = DbConection.GetConnection())
         {
-            string sql = @"INSERT INTO Users(Username, Password, Role, ID_KH)
-                       VALUES(@username,@pass,@role,@idKH)";
+            string sql = @"UPDATE Users 
+                       SET Role=@role,
+                           Password = CASE WHEN @pass='' THEN Password ELSE @pass END
+                       WHERE ID=@id";
             SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@pass", password);
             cmd.Parameters.AddWithValue("@role", role);
-            cmd.Parameters.AddWithValue("@idKH", idKH.HasValue ? (object)idKH.Value : DBNull.Value);
+            cmd.Parameters.AddWithValue("@pass", password);
+            cmd.Parameters.AddWithValue("@id", id);
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+    public static void CreateKhachHangForUser(int userId, string ten, string phone, string diachi, string email)
+    {
+        using (SqlConnection con = DbConection.GetConnection())
+        {
+            string sql = @"
+        DECLARE @newID INT;
+
+        INSERT INTO KhachHang(TenKH,PhoneNumber,DiaChi,Email)
+        VALUES(@ten,@phone,@dc,@mail);
+
+        SET @newID = SCOPE_IDENTITY();
+
+        UPDATE Users SET ID_KH = @newID WHERE ID=@uid;
+        ";
+
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@ten", ten);
+            cmd.Parameters.AddWithValue("@phone", phone);
+            cmd.Parameters.AddWithValue("@dc", diachi);
+            cmd.Parameters.AddWithValue("@mail", email);
+            cmd.Parameters.AddWithValue("@uid", userId);
 
             con.Open();
             cmd.ExecuteNonQuery();
         }
     }
+
+    public static void RemoveKhachHangLink(int id)
+    {
+        using (SqlConnection con = DbConection.GetConnection())
+        {
+            string sql = "UPDATE Users SET ID_KH=NULL WHERE ID=@id";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@id", id);
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
+    }
+
     public static void UpdateUserRole(int id, string role)
     {
         using (SqlConnection con = DbConection.GetConnection())
@@ -126,7 +166,7 @@ public class GetUser : DbConection
     {
         using (SqlConnection con = DbConection.GetConnection())
         {
-            string sql = "SELECT u.ID, u.Username, u.Role, k.TenKH, k.Email, k.PhoneNumber, k.DiaChi " +
+            string sql = "SELECT u.ID, u.Username,u.Password, u.Role, k.TenKH, k.Email, k.PhoneNumber, k.DiaChi " +
                          "FROM Users u LEFT JOIN KhachHang k ON u.ID_KH = k.id " +
                          "WHERE u.Role=@role ORDER BY u.Username";
             SqlCommand cmd = new SqlCommand(sql, con);
@@ -137,20 +177,30 @@ public class GetUser : DbConection
             return dt;
         }
     }
-
-    public static dynamic GetUserByID(int id)
+    public class UserInfo
+    {
+        public int ID { get; set; }
+        public int? ID_KH { get; set; }
+    }
+    public static UserInfo GetUserByID(int id)
     {
         using (SqlConnection con = DbConection.GetConnection())
         {
             string sql = "SELECT ID, ID_KH FROM Users WHERE ID=@id";
             SqlCommand cmd = new SqlCommand(sql, con);
             cmd.Parameters.AddWithValue("@id", id);
+
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             da.Fill(dt);
-            if (dt.Rows.Count > 0)
-                return new { ID = (int)dt.Rows[0]["ID"], ID_KH = dt.Rows[0]["ID_KH"] as int? };
-            return null;
+
+            if (dt.Rows.Count == 0) return null;
+
+            return new UserInfo
+            {
+                ID = (int)dt.Rows[0]["ID"],
+                ID_KH = dt.Rows[0]["ID_KH"] == DBNull.Value ? null : (int?)dt.Rows[0]["ID_KH"]
+            };
         }
     }
     public static void UpdateKhachHang(int idKH, string ten, string phone, string diachi, string email)

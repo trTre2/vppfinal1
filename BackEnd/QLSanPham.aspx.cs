@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.IO;
 
 public partial class BackEnd_QLSanPham : System.Web.UI.Page
 {
@@ -16,6 +17,7 @@ public partial class BackEnd_QLSanPham : System.Web.UI.Page
         if (!IsPostBack)
         {
             LoadLoai();
+            LoadLoaiFilter();
             LoadGrid();
         }
     }
@@ -30,7 +32,12 @@ public partial class BackEnd_QLSanPham : System.Web.UI.Page
 
     void LoadGrid()
     {
-        gvSanPham.DataSource = ManageData.GetSanPham();
+        string maloai = ddlLoaiFilter.SelectedValue;
+
+        gvSanPham.DataSource = string.IsNullOrEmpty(maloai)
+            ? ManageData.GetSanPham()
+            : ManageData.GetSanPhamByLoai(maloai);
+
         gvSanPham.DataBind();
     }
 
@@ -68,6 +75,43 @@ public partial class BackEnd_QLSanPham : System.Web.UI.Page
         txtTinhTrang.Text = "";
         ddlLoai.SelectedIndex = 0;
         fuAnh.Dispose(); 
+    }
+
+    protected void ddlLoaiFilter_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        gvSanPham.EditIndex = -1;
+        LoadGrid();
+    }
+
+    protected void gv_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow &&
+            (e.Row.RowState & DataControlRowState.Edit) > 0)
+        {
+            DropDownList ddl = (DropDownList)e.Row.FindControl("ddlLoaiEdit");
+            if (ddl != null)
+            {
+                DataTable dt = ManageData.GetAllLoai();
+                ddl.DataSource = dt;
+                ddl.DataTextField = "TenLoai";
+                ddl.DataValueField = "MaLoai";
+                ddl.DataBind();
+
+                string maloai = DataBinder.Eval(e.Row.DataItem, "MaLoai").ToString();
+                ddl.SelectedValue = maloai;
+            }
+        }
+    }
+    void LoadLoaiFilter()
+    {
+        DataTable dt = ManageData.GetAllLoai();
+
+        ddlLoaiFilter.DataSource = dt;
+        ddlLoaiFilter.DataTextField = "TenLoai";
+        ddlLoaiFilter.DataValueField = "MaLoai";
+        ddlLoaiFilter.DataBind();
+
+        ddlLoaiFilter.Items.Insert(0, new ListItem("Tất cả", ""));
     }
 
     protected void gv_RowEditing(object sender, GridViewEditEventArgs e)
@@ -129,7 +173,7 @@ public partial class BackEnd_QLSanPham : System.Web.UI.Page
         ManageData.DeleteSanPham(id);
         LoadGrid();
     }
-    protected void gv_RowDataBound(object sender, GridViewRowEventArgs e)
+    protected void gv_RowDataBound1(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow &&
             e.Row.RowState.HasFlag(DataControlRowState.Edit))

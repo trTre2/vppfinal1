@@ -1,11 +1,11 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/QuanTri.master" AutoEventWireup="true" CodeFile="QLTaiKhoan.aspx.cs" Inherits="BackEnd_QLTaiKhoan" %>
+﻿<%@ Page Title="Quản lý tài khoản" Language="C#" MasterPageFile="~/QuanTri.master" AutoEventWireup="true" CodeFile="QLTaiKhoan.aspx.cs" Inherits="BackEnd_QLTaiKhoan" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~/css/GridviewQL.css") %>" />
     <div id="container">
 
         <div class="profile-box" id="left" style="min-width: 300px" runat="server">
-            <h3>QUẢN LÝ TÀI KHOẢN</h3>
+            <h3>THÊM MỚI TÀI KHOẢN</h3>
 
             <div class="row">
                 <span class="title">Role</span>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="row">
                     <span class="title">Số điện thoại</span>
-                    <asp:TextBox ID="txtPhone" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtPhone" textMode="Number" runat="server"></asp:TextBox>
                 </div>
                 <div class="row">
                     <span class="title">Địa chỉ</span>
@@ -63,20 +63,63 @@
                 <asp:ListItem Text="Customer" Value="customer" />
             </asp:DropDownList>
             <asp:GridView ID="gvUsers" runat="server"
-                AutoGenerateColumns="False"
-                DataKeyNames="ID"
-                OnRowEditing="gv_RowEditing"
-                OnRowUpdating="gv_RowUpdating"
-                OnRowCancelingEdit="gv_RowCancelingEdit"
-                OnRowDeleting="gv_RowDeleting"
-                CssClass="table">
+    AutoGenerateColumns="False"
+    DataKeyNames="ID,Role"
+    OnRowEditing="gv_RowEditing"
+    OnRowUpdating="gv_RowUpdating"
+    OnRowCancelingEdit="gv_RowCancelingEdit"
+    OnRowDeleting="gv_RowDeleting"
+    CssClass="table">
+
                 <Columns>
-                    <asp:BoundField DataField="Username" HeaderText="Tên đăng nhập" ReadOnly="true" />
-                    <asp:BoundField DataField="Role" HeaderText="Role" />
-                    <asp:BoundField DataField="TenKH" HeaderText="Họ tên" />
-                    <asp:BoundField DataField="Email" HeaderText="Email" />
-                    <asp:BoundField DataField="PhoneNumber" HeaderText="Phone" />
-                    <asp:BoundField DataField="DiaChi" HeaderText="Địa chỉ" />
+                    <asp:BoundField DataField="Username" HeaderText="Username" ReadOnly="true" />
+
+                    <asp:TemplateField HeaderText="Role">
+                        <ItemTemplate><%# Eval("Role") %></ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:DropDownList ID="ddlRoleEdit" runat="server">
+                                <asp:ListItem Value="admin">admin</asp:ListItem>
+                                <asp:ListItem Value="customer">customer</asp:ListItem>
+                                <asp:ListItem Value="limited">limited</asp:ListItem>
+                            </asp:DropDownList>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="Mật khẩu">
+                        <ItemTemplate><%# Eval("Password") %></ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtPasswordEdit" runat="server"></asp:TextBox>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="Họ tên">
+                        <ItemTemplate><%# Eval("TenKH") %></ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtTenKHEdit" runat="server" Text='<%# Bind("TenKH") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="Email">
+                        <ItemTemplate><%# Eval("Email") %></ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtEmailEdit" runat="server" Text='<%# Bind("Email") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="Phone">
+                        <ItemTemplate><%# Eval("PhoneNumber") %></ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtPhoneEdit" runat="server" Text='<%# Bind("PhoneNumber") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="Địa chỉ">
+                        <ItemTemplate><%# Eval("DiaChi") %></ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtAddressEdit" runat="server" Text='<%# Bind("DiaChi") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
+
                     <asp:CommandField ShowEditButton="true" ShowDeleteButton="true" />
                 </Columns>
             </asp:GridView>
